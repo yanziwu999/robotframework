@@ -1,4 +1,17 @@
 Robot Framework
+
+***************************************************
+Add auto retry func,default 3 times
+
+Installation
+--------------------------------------------
+cloning the project repository
+from GitHub. After that you can install the framework with::
+
+    python setup.py install
+--------------------------------------------    
+***************************************************
+
 ===============
 
 .. contents::
