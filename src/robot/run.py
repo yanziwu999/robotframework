@@ -405,7 +405,9 @@ $ export ROBOT_OPTIONS="--outputdir results --suitestatlevel 2"
 $ export ROBOT_SYSLOG_FILE=/tmp/syslog.txt
 $ robot tests.robot
 """
-
+import imp
+imp.reload(sys)
+from xml.dom import minidom
 
 class RobotFramework(Application):
 
@@ -443,6 +445,7 @@ class RobotFramework(Application):
                 text.MAX_ERROR_LINES = old_max_error_lines
             LOGGER.info("Tests execution ended. Statistics:\n%s"
                         % result.suite.stat_message)
+            self.make(settings.output)
             if settings.log or settings.report or settings.xunit:
                 writer = ResultWriter(settings.output if settings.log
                                       else result)
@@ -455,6 +458,35 @@ class RobotFramework(Application):
     def _filter_options_without_value(self, options):
         return dict((name, value) for name, value in options.items()
                     if value not in (None, []))
+    
+        def make(self, outxml):
+        xmldoc = minidom.parse(outxml)
+        suiteElementList = xmldoc.getElementsByTagName('suite')
+        mySuite = []
+        for suiteElement in suiteElementList:
+            if suiteElement.childNodes is not None:
+                for element in suiteElement.childNodes:
+                    if element.nodeName == 'test':
+                        mySuite.append(suiteElement)
+                        break
+        for suite in mySuite:
+            testElements = {}
+            for element in suite.childNodes:
+                if element.nodeName == 'test':
+                    name = element.getAttribute('name')
+                    if testElements.get(name) == None:
+                        testElements.update({name: [element]})
+                    else:
+                        testElements.get(name).append(element)
+            for n, el in testElements.items():
+                for i in el[0:-1]:
+                    textElement = i.nextSibling
+                    suite.removeChild(i)
+                    suite.removeChild(textElement)
+        savefile = open(outxml, 'w', encoding='utf-8')
+        root = xmldoc.documentElement
+        root.writexml(savefile)
+        savefile.close()
 
 
 def run_cli(arguments=None, exit=True):
