@@ -68,7 +68,9 @@ class _BaseSettings:
                  'ConsoleColors'    : ('consolecolors', 'AUTO'),
                  'PythonPath'       : ('pythonpath', []),
                  'StdOut'           : ('stdout', None),
-                 'StdErr'           : ('stderr', None)}
+                 'StdErr'           : ('stderr', None),
+                 'Retry'            : ('retry',3)
+                 }
     _output_opts = ['Output', 'Log', 'Report', 'XUnit', 'DebugFile']
 
     def __init__(self, options=None, **extra_options):
