@@ -193,7 +193,10 @@ class ArgumentParser:
         for name, value in opt_tuple:
             name = self._get_name(name)
             if name in self._multi_opts:
-                opts[name].append(value)
+                if value.startswith('[') and value.endswith(']'):
+                    opts[name].extend(eval(value))
+                else:
+                    opts[name].append(value)
             elif name in self._flag_opts:
                 opts[name] = True
             elif name.startswith('no') and name[2:] in self._flag_opts:
