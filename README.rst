@@ -1,6 +1,7 @@
-Robot Framework
+Robot Framework update
 
 ***************************************************
+Func1. 增加失败用例自动重跑功能
 Add auto retry func,default 3 times
 
 Installation
@@ -9,7 +10,15 @@ cloning the project repository
 from GitHub. After that you can install the framework with::
 
     python setup.py install
---------------------------------------------    
+--------------------------------------------  
+
+
+Func2. 增加pabot方式，并发运行指定用例功能，需配合robotFramework-pabot一起使用
+参数：
+--test [test1,test2...]
+
+
+
 ***************************************************
 
 ===============
