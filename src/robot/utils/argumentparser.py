@@ -12,7 +12,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import ast
 import getopt
 import glob
 import os
@@ -194,7 +194,7 @@ class ArgumentParser:
             name = self._get_name(name)
             if name in self._multi_opts:
                 if value.startswith('[') and value.endswith(']'):
-                    opts[name].extend(eval(value))
+                    opts[name].extend(ast.literal_eval(value))
                 else:
                     opts[name].append(value)
             elif name in self._flag_opts:
